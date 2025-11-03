@@ -13,7 +13,7 @@ A simple web application that allows users to input latitude and longitude coord
 ## Technologies Used
 
 - **Frontend**: HTML, CSS, JavaScript
-- **QR Code Generation**: QRCode.js (loaded from CDN)
+- **QR Code Generation**: QRCode.js (served locally)
 - **Server**: Python's built-in `http.server` module for local hosting
 
 ## How to Run

@@ -5,27 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coordinates to QR</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="qrcode.min.js"></script>
 </head>
 <body>
     <div class="container">
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
-        <h1>Convert Coordinates to QR Code</h1>
-        <p>Enter latitude and longitude to generate a QR code that opens the location in Google Maps.</p>
-        <form id="coord-form">
+        <h1>Convert Text to QR Code</h1>
+        <p>Enter any text or coordinates to generate a QR code. If coordinates are detected, it will link to Google Maps.</p>
+        <form id="text-form">
             <div class="input-group">
-                <label for="latitude">Latitude:</label>
-                <input type="number" id="latitude" step="any" placeholder="e.g., 37.7749" required>
-            </div>
-            <div class="input-group">
-                <label for="longitude">Longitude:</label>
-                <input type="number" id="longitude" step="any" placeholder="e.g., -122.4194" required>
+                <label for="text-input">Text or Coordinates:</label>
+                <textarea id="text-input" placeholder="e.g., Hello World or 37.7749, -122.4194" required></textarea>
             </div>
             <button type="submit" id="generate-btn">Generate QR Code</button>
         </form>
         <div id="qr-container" class="qr-container">
             <p id="qr-text">Your QR code will appear here.</p>
-            <div id="qrcode"></div>
+            <div id="qrcode" class="qr-code"></div>
         </div>
     </div>
     <script src="script.js"></script>

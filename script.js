@@ -1,40 +1,55 @@
-document.getElementById('coord-form').addEventListener('submit', function(event) {
+document.getElementById('text-form').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const lat = parseFloat(document.getElementById('latitude').value);
-    const lng = parseFloat(document.getElementById('longitude').value);
+    const inputText = document.getElementById('text-input').value.trim();
 
-    // Validate coordinates
-    if (isNaN(lat) || isNaN(lng)) {
-        alert('Please enter valid numbers for latitude and longitude.');
+    if (!inputText) {
+        alert('Please enter some text.');
         return;
     }
 
-    if (lat < -90 || lat > 90) {
-        alert('Latitude must be between -90 and 90.');
-        return;
-    }
+    // Check if input is coordinates (lat, lng format)
+    const coordRegex = /^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/;
+    const match = inputText.match(coordRegex);
 
-    if (lng < -180 || lng > 180) {
-        alert('Longitude must be between -180 and 180.');
-        return;
-    }
+    let qrText;
+    let qrMessage;
 
-    // Create Google Maps URL
-    const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+    if (match) {
+        const lat = parseFloat(match[1]);
+        const lng = parseFloat(match[3]);
+
+        // Validate coordinates
+        if (lat < -90 || lat > 90) {
+            alert('Latitude must be between -90 and 90.');
+            return;
+        }
+
+        if (lng < -180 || lng > 180) {
+            alert('Longitude must be between -180 and 180.');
+            return;
+        }
+
+        // Create Google Maps URL
+        qrText = `https://www.google.com/maps?q=${lat},${lng}`;
+        qrMessage = 'Scan this QR code to view the location on Google Maps.';
+    } else {
+        // Treat as plain text
+        qrText = inputText;
+        qrMessage = 'Scan this QR code to view the text.';
+    }
 
     // Clear previous QR code
     const qrContainer = document.getElementById('qrcode');
     qrContainer.innerHTML = '';
 
-    // Get QR code colors based on theme
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const qrDark = isDark ? '#ffffff' : '#000000';
-    const qrLight = isDark ? '#000000' : '#ffffff';
+    // QR codes must have high contrast for scannability - always use black on white
+    const qrDark = '#000000';
+    const qrLight = '#ffffff';
 
     // Generate new QR code
     new QRCode(qrContainer, {
-        text: mapsUrl,
+        text: qrText,
         width: 256,
         height: 256,
         colorDark: qrDark,
@@ -42,9 +57,9 @@ document.getElementById('coord-form').addEventListener('submit', function(event)
         correctLevel: QRCode.CorrectLevel.H
     });
 
-    // Show QR container
+    // Show QR container with animation
     document.getElementById('qr-container').classList.add('show');
-    document.getElementById('qr-text').textContent = 'Scan this QR code to view the location on Google Maps.';
+    document.getElementById('qr-text').textContent = qrMessage;
 });
 
 // Theme toggle functionality

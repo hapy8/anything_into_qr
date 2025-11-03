@@ -47,7 +47,19 @@ body {
     max-width: 500px;
     width: 90%;
     text-align: center;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    animation: containerSlideIn 0.6s ease-out;
+}
+
+@keyframes containerSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 h1 {
@@ -87,6 +99,26 @@ input {
     background-color: var(--container-bg);
     color: var(--text-color);
 }
+textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: var(--container-bg);
+    color: var(--text-color);
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px var(--focus-shadow);
+}
 
 input:focus {
     outline: none;
@@ -103,26 +135,53 @@ button {
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.1s;
     width: 100%;
     margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+button:active::before {
+    width: 300px;
+    height: 300px;
 }
 
 button:hover {
     background-color: var(--accent-hover);
+    transform: translateY(-1px);
 }
 
 button:active {
     background-color: var(--accent-active);
+    transform: translateY(0);
 }
 
 .qr-container {
     margin-top: 30px;
     display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .qr-container.show {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 #qr-text {
@@ -131,12 +190,24 @@ button:active {
     margin-bottom: 20px;
 }
 
-#qrcode {
+.qr-code {
     display: inline-block;
+    animation: qrFadeIn 0.5s ease-in-out;
+}
+
+@keyframes qrFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .theme-toggle {
-    position: fixed;
+    position: absolute;
     top: 20px;
     right: 20px;
     background: var(--container-bg);
