@@ -1,6 +1,7 @@
 import http.server
 import socketserver
 import socket
+import threading
 
 PORT = 0  # Use 0 to let the OS assign a random available port
 
@@ -8,10 +9,30 @@ PORT = 0  # Use 0 to let the OS assign a random available port
 import os
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-Handler = http.server.SimpleHTTPRequestHandler
+class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
+    def end_headers(self):
+        # Add CORS headers for better compatibility
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'X-Requested-With')
+        self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+        self.send_header('Pragma', 'no-cache')
+        self.send_header('Expires', '0')
+        super().end_headers()
+
+    def log_message(self, format, *args):
+        # Reduce logging verbosity to improve performance
+        if "GET /" in format and ("200" in format or "304" in format):
+            return  # Suppress successful GET requests
+        super().log_message(format, *args)
+
+Handler = CustomHTTPRequestHandler
 
 # Create the server with port 0 to get a random available port
-httpd = socketserver.TCPServer(("0.0.0.0", PORT), Handler)
+httpd = socketserver.ThreadingTCPServer(("0.0.0.0", PORT), Handler, bind_and_activate=False)
+httpd.allow_reuse_address = True
+httpd.server_bind()
+httpd.server_activate()
 PORT = httpd.server_address[1]  # Get the actual assigned port
 
 with httpd:

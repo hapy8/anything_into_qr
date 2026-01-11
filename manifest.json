@@ -1,0 +1,43 @@
+{
+  "name": "QR Code Generator",
+  "short_name": "QR Gen",
+  "description": "Convert text or coordinates to QR codes with offline support",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f5f7",
+  "theme_color": "#007aff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "categories": ["productivity", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192' fill='none'><rect width='192' height='192' rx='24' fill='%23007aff'/><path d='M48 48h32v32H48zM48 112h32v32H48zM112 48h32v32h-32zM80 80h32v32H80z' fill='white'/><circle cx='64' cy='64' r='4' fill='%23007aff'/><circle cx='64' cy='128' r='4' fill='%23007aff'/><circle cx='128' cy='64' r='4' fill='%23007aff'/><circle cx='96' cy='96' r='4' fill='%23007aff'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='none'><rect width='512' height='512' rx='64' fill='%23007aff'/><path d='M128 128h96v96h-96zM128 288h96v96h-96zM288 128h96v96h-96zM208 208h96v96h-96z' fill='white'/><circle cx='176' cy='176' r='12' fill='%23007aff'/><circle cx='176' cy='336' r='12' fill='%23007aff'/><circle cx='336' cy='176' r='12' fill='%23007aff'/><circle cx='256' cy='256' r='12' fill='%23007aff'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Generate QR Code",
+      "short_name": "New QR",
+      "description": "Create a new QR code",
+      "url": "/",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' rx='12' fill='%23007aff'/><path d='M24 24h16v16H24zM24 56h16v16H24zM56 24h16v16H56zM40 40h16v16H40z' fill='white'/></svg>",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

@@ -60,7 +60,105 @@ document.getElementById('text-form').addEventListener('submit', function(event) 
     // Show QR container with animation
     document.getElementById('qr-container').classList.add('show');
     document.getElementById('qr-text').textContent = qrMessage;
+    // The scan instruction is always visible when QR container is shown
 });
+
+// PWA Installation
+let deferredPrompt;
+const installBtn = document.getElementById('install-btn');
+
+// Check if app is already installed
+async function checkIfInstalled() {
+    if ('getInstalledRelatedApps' in navigator) {
+        try {
+            const relatedApps = await navigator.getInstalledRelatedApps();
+            return relatedApps.some(app => app.url === window.location.origin);
+        } catch (error) {
+            console.log('Error checking installation status:', error);
+        }
+    }
+    return false;
+}
+
+// Show install button only if not already installed
+async function showInstallButton() {
+    const isInstalled = await checkIfInstalled();
+    if (!isInstalled) {
+        installBtn.style.display = 'block';
+    }
+}
+
+showInstallButton();
+
+installBtn.addEventListener('click', async () => {
+    // Check if we have a deferred prompt (Chrome/Android)
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+            installBtn.style.display = 'none';
+        }
+        deferredPrompt = null;
+    } else {
+        // Check if already installed
+        if ('getInstalledRelatedApps' in navigator) {
+            const relatedApps = await navigator.getInstalledRelatedApps();
+            const isInstalled = relatedApps.some(app => app.url === window.location.origin);
+            if (isInstalled) {
+                alert('App is already installed!');
+                installBtn.style.display = 'none';
+                return;
+            }
+        }
+
+        // Fallback for browsers that don't support beforeinstallprompt
+        // For iOS Safari and other browsers, show instructions
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            alert('To install: Tap the share button (📤) and select "Add to Home Screen"');
+        } else if (/Android/.test(navigator.userAgent)) {
+            alert('To install: Tap the menu (⋮) and select "Add to Home screen" or "Install app"');
+        } else {
+            alert('To install this app, use your browser\'s "Add to Home Screen" or "Install" option from the address bar or menu.');
+        }
+    }
+});
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+});
+
+window.addEventListener('appinstalled', () => {
+    installBtn.style.display = 'none';
+    deferredPrompt = null;
+});
+
+// Service Worker Registration
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('ServiceWorker registration successful');
+                registration.update(); // Force update check
+            })
+            .catch(error => {
+                console.log('ServiceWorker registration failed:', error);
+            });
+    });
+}
+
+// Offline detection
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+function updateOnlineStatus() {
+    const isOnline = navigator.onLine;
+    console.log(isOnline ? 'Back online' : 'You are offline');
+
+    // You could add visual indicators here if needed
+    // For example, show/hide an offline message
+}
 
 // Theme toggle functionality
 const themeToggle = document.getElementById('theme-toggle');

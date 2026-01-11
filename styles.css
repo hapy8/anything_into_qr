@@ -190,6 +190,13 @@ button:active {
     margin-bottom: 20px;
 }
 
+#scan-instruction {
+    font-size: 14px;
+    color: var(--secondary-text);
+    margin-top: 15px;
+    font-style: italic;
+}
+
 .qr-code {
     display: inline-block;
     animation: qrFadeIn 0.5s ease-in-out;
@@ -204,6 +211,34 @@ button:active {
         opacity: 1;
         transform: scale(1);
     }
+}
+
+.install-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: var(--container-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: all 0.3s;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 2px var(--shadow);
+    line-height: 1;
+}
+
+.install-btn:hover {
+    background: var(--accent-color);
+    color: #ffffff;
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px var(--shadow);
 }
 
 .theme-toggle {
